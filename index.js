@@ -81,8 +81,8 @@ app.post('/register', async(req, res) => {
 // LOGIN
 
 app.post('/login', async (req, res) => {
-    let {email, password} = req.body
     try {
+        const {email, password} = req.body
         
     
         const user = await UserModel.findOne({email})
@@ -109,7 +109,7 @@ app.post('/login', async (req, res) => {
     
         }
     
-        const token = JWT.sign({ _id: user._id }, process.env.JWT_SECRET, { expiresIn: "7d" })
+        const token = await JWT.sign({ _id: user._id }, process.env.JWT_SECRET, { expiresIn: "7d" })
     
         res.status(200).send({
             success: true,
