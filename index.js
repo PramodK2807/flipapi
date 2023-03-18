@@ -83,7 +83,7 @@ app.post('/login', async (req, res) => {
     try {
         const { email, password } = req.body;
         // Check if user already exists
-        const user = await User.findOne({ email })
+        const user = await UserModel.findOne({ email })
         if (!user) {
             return res.status(404).send({
                 success: false,
