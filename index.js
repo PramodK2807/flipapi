@@ -81,52 +81,52 @@ app.post('/register', async(req, res) => {
 // LOGIN
 app.post('/login', async (req, res) => {
     try {
-        const {email, password} = req.body;
+        const { email, password } = req.body;
         // Check if user already exists
-        const user = await UserModel.findOne({email})
-        if (!user){
+        const user = await User.findOne({ email })
+        if (!user) {
             return res.status(404).send({
-                success:false,
-                message:"User not registered or Invalid",
-                
+                success: false,
+                message: "User not registered or Invalid",
+
             })
         }
-        if(!password || !email){
+        if (!password || !email) {
             return res.status(404).send({
-                success:false,
-                message:"Please Enter email and password",
+                success: false,
+                message: "Invalid email or password",
 
-        })
-    }
+            })
+        }
 
         const matchPassword = await compare(password, user.password)
-        if (!matchPassword){
+        if (!matchPassword) {
             return res.status(404).send({
-                success:false,
-                message:"Invalid email or password",
+                success: false,
+                message: "Invalid email or password",
             })
         }
 
         // generate token 
 
-        const token = await JWT.sign({_id:user._id}, process.env.JWT_SECRET, {expiresIn:"7d"})
+        const token = await JWT.sign({ _id: user._id }, process.env.JWT_SECRET, { expiresIn: "7d" })
 
         res.status(200).send({
-            success:true,
-            message:"Login successful",
-            user:{
-                _id:user._id,
-                name:user.name,
-                email:user.email,
-                mobile:user.mobile,
-                isAdmin:user.isAdmin
+            success: true,
+            message: "Login successful",
+            user: {
+                _id: user._id,
+                name: user.name,
+                email: user.email,
+                mobile: user.mobile,
+                isAdmin: user.isAdmin
             },
             token
         })
     } catch (error) {
         res.status(400).send({
-            success:false,
-            message:"Invalid Credentials",
+            success: false,
+            message: "Invalid Credentials",
             error,
         })
     }
