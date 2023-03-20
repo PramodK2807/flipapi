@@ -94,7 +94,7 @@ app.post('/login', async (req, res) => {
         if (!password || !email) {
             return res.status(404).send({
                 success: false,
-                message: "Invalid email or password",
+                message: "Please Enter email and password",
 
             })
         }
@@ -109,7 +109,7 @@ app.post('/login', async (req, res) => {
 
         // generate token 
 
-        const token = await JWT.sign({ _id: user._id }, process.env.JWT_SECRET, { expiresIn: "7d" })
+        const token = JWT.sign({ _id: user._id }, process.env.JWT_SECRET, { expiresIn: "7d" })
 
         res.status(200).send({
             success: true,
